@@ -2,6 +2,30 @@
 //BUDGET CONTROLLER
 var budgetController = (function () {
 
+  //create an obj constructor with a description, value and ID
+  var Income = function(id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  }
+
+  var Expense = function(id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  }
+
+  //You need to store your incomes and expeses somewhere!
+  var data = {
+    allItems: {
+      inc: [],
+      exp: []
+    },
+    totals: {
+      inc: 0,
+      exp: 0
+    }
+  }
 
 })();
 
