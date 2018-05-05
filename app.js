@@ -70,7 +70,9 @@ var uiController = (function(){
     inputValue: '.add__value',
     inputBtn: '.add__btn',
     incomeContainer: '.income__list',
-    expensesCotainer: '.expenses__list'
+    expensesCotainer: '.expenses__list',
+    descriptionInput: '.add__description',
+    valueInput: '.add__value'
   }
 
   return {
@@ -101,6 +103,13 @@ var uiController = (function(){
       //Insert the HTML into the DOM
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
       //Testing if it works -> console.log(newHtml);
+    },
+
+    clearInputs: function() {
+      var descInput = document.querySelector(domStrings.descriptionInput);
+      descInput.value = '';
+      var valueInput = document.querySelector(domStrings.valueInput);
+      valueInput.value = '';
     },
 
     getDOMstrings: function() {
@@ -135,6 +144,8 @@ var controller = (function(budgetCtrl, uiCtrl){
      newItem = budgetCtrl.addItem(input.type, input.description, input.value);
      // 3. Add the item to the UI
      uiCtrl.addListItem(newItem, input.type);
+     // EXTRA. Clear inputs in UI
+     uiCtrl.clearInputs();
      // 4. Calculate the budget
      // 5. Display the budget on the UI
 
