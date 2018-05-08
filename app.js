@@ -53,6 +53,28 @@ var budgetController = (function () {
       //give access to newItem to the module that calls this method
       return newItem;
     },
+
+    calculateBudget: function() {
+      var totalBud = 0;
+
+      if (data.allItems.inc.length > 0) {
+        data.totals.inc = data.allItems.inc.reduce( function(acc, current) {
+          return acc + current.value;
+      }, 0);
+      }
+
+      if (data.allItems.exp.length > 0) {
+        data.totals.exp = data.allItems.exp.reduce( function(acc, current) {
+          return acc + current.value;
+      }, 0);
+      }
+
+    },
+
+    getBudget: function() {
+      return data.totals.inc - data.totals.exp;
+    },
+
     testing: function() {
       console.log(data);
     }
