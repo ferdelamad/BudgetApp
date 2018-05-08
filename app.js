@@ -15,6 +15,13 @@ var budgetController = (function () {
     this.value = value;
   }
 
+  //Calculate total income or total expenses
+  var calculateTotal = function(array) {
+    return array.reduce( function(acc, current) {
+      return acc + current.value;
+    }, 0);
+  }
+
   //You need to store your incomes and expeses somewhere!
   var data = {
     ids: 0,
@@ -58,15 +65,11 @@ var budgetController = (function () {
       var totalBud = 0;
 
       if (data.allItems.inc.length > 0) {
-        data.totals.inc = data.allItems.inc.reduce( function(acc, current) {
-          return acc + current.value;
-      }, 0);
+        data.totals.inc = calculateTotal(data.allItems.inc);
       }
 
       if (data.allItems.exp.length > 0) {
-        data.totals.exp = data.allItems.exp.reduce( function(acc, current) {
-          return acc + current.value;
-      }, 0);
+        data.totals.exp = calculateTotal(data.allItems.exp);
       }
 
     },
