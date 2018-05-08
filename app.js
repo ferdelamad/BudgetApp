@@ -16,8 +16,8 @@ var budgetController = (function () {
   }
 
   //Calculate total income or total expenses
-  var calculateTotal = function(array) {
-    return array.reduce( function(acc, current) {
+  var calculateTotal = function(type) {
+    data.totals[type] = data.allItems[type].reduce( function(acc, current) {
       return acc + current.value;
     }, 0);
   }
@@ -32,7 +32,8 @@ var budgetController = (function () {
     totals: {
       inc: 0,
       exp: 0
-    }
+    },
+    budget: 0
   }
 
   return {
@@ -62,15 +63,14 @@ var budgetController = (function () {
     },
 
     calculateBudget: function() {
-      var totalBud = 0;
+      //1.- Calculate total income and total expenses
+      calculateTotal('inc');
+      calculateTotal('exp');
 
-      if (data.allItems.inc.length > 0) {
-        data.totals.inc = calculateTotal(data.allItems.inc);
-      }
+      //2.- Calculate total budget (income - expenses)
+      data.budget = data.totals.inc - data.totals.exp;
 
-      if (data.allItems.exp.length > 0) {
-        data.totals.exp = calculateTotal(data.allItems.exp);
-      }
+      //3.- Calculate the percetange of income that we have spent
 
     },
 
