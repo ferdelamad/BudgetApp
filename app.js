@@ -33,7 +33,8 @@ var budgetController = (function () {
       inc: 0,
       exp: 0
     },
-    budget: 0
+    budget: 0,
+    percetange: 0
   }
 
   return {
@@ -71,7 +72,7 @@ var budgetController = (function () {
       data.budget = data.totals.inc - data.totals.exp;
 
       //3.- Calculate the percetange of income that we have spent
-
+      data.percetange = Math.floor((data.totals.exp / data.totals.inc) * 100);
     },
 
     getBudget: function() {
@@ -163,7 +164,7 @@ var controller = (function(budgetCtrl, uiCtrl){
 
    var calculateBudget = function() {
      //1.- Calculate the budget
-
+     budgetCtrl.calculateBudget();
      //2.- Return the budget
 
      //3.- Display the budget on the UI
@@ -182,7 +183,7 @@ var controller = (function(budgetCtrl, uiCtrl){
 
      // 4. Clear the fields
      uiCtrl.clearFields();
-     // 5. Calculate and display buget
+     // 5. Calculate and display budget
 
      //Test -> console.log(input);
 
