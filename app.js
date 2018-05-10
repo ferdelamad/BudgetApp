@@ -72,7 +72,11 @@ var budgetController = (function () {
       data.budget = data.totals.inc - data.totals.exp;
 
       //3.- Calculate the percetange of income that we have spent
-      data.percetange = Math.floor((data.totals.exp / data.totals.inc) * 100);
+      if (data.totals.inc > 0) {
+        data.percetange = Math.floor((data.totals.exp / data.totals.inc) * 100);
+      } else {
+        data.percetange = 0;
+      }
       // In order to get the percentage of how much we have spent
       // Example: Income = 200, Expenses = 100, spent 50% -> 100/200 = 0.5 * 100
 
@@ -104,7 +108,11 @@ var uiController = (function(){
     inputValue: '.add__value',
     inputBtn: '.add__btn',
     incomeContainer: '.income__list',
-    expensesCotainer: '.expenses__list'
+    expensesCotainer: '.expenses__list',
+    budget: ".budget__value",
+    income: ".budget__income--value",
+    expenses: ".budget__expenses--value",
+    percentage: ".budget__expenses--percentage"
   }
 
   return {
@@ -146,6 +154,13 @@ var uiController = (function(){
       fieldsArr[0].focus();
     },
 
+    displayBudget: function(obj) {
+      document.querySelector(domStrings.budget).textContent = obj.budget;
+      document.querySelector(domStrings.income).textContent = obj.totalInc;
+      document.querySelector(domStrings.expenses).textContent = obj.totalExp;
+      document.querySelector(domStrings.percentage).textContent = obj.percentage;
+    },
+
     getDOMstrings: function() {
       return domStrings;
     }
@@ -176,6 +191,7 @@ var controller = (function(budgetCtrl, uiCtrl){
      //2.- Return the budget
      var budget = budgetCtrl.getBudget();
      //3.- Display the budget on the UI
+     uiCtrl.displayBudget(budget);
      console.log(budget);
    }
 
