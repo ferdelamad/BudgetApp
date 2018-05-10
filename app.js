@@ -73,10 +73,18 @@ var budgetController = (function () {
 
       //3.- Calculate the percetange of income that we have spent
       data.percetange = Math.floor((data.totals.exp / data.totals.inc) * 100);
+      // In order to get the percentage of how much we have spent
+      // Example: Income = 200, Expenses = 100, spent 50% -> 100/200 = 0.5 * 100
+
     },
 
     getBudget: function() {
-      return data.totals.inc - data.totals.exp;
+      return {
+        budget: data.totals.inc - data.totals.exp,
+        totalInc: data.totals.inc,
+        totalExp: data.totals.exp,
+        percentage: data.percetange
+      }
     },
 
     testing: function() {
@@ -166,8 +174,9 @@ var controller = (function(budgetCtrl, uiCtrl){
      //1.- Calculate the budget
      budgetCtrl.calculateBudget();
      //2.- Return the budget
-
+     var budget = budgetCtrl.getBudget();
      //3.- Display the budget on the UI
+     console.log(budget);
    }
 
    var ctrlAddItem = function() {
@@ -184,10 +193,11 @@ var controller = (function(budgetCtrl, uiCtrl){
      // 4. Clear the fields
      uiCtrl.clearFields();
      // 5. Calculate and display budget
-
+     calculateBudget();
      //Test -> console.log(input);
 
     }
+
    };
 
 
