@@ -158,7 +158,12 @@ var uiController = (function(){
       document.querySelector(domStrings.budget).textContent = obj.budget;
       document.querySelector(domStrings.income).textContent = obj.totalInc;
       document.querySelector(domStrings.expenses).textContent = obj.totalExp;
-      document.querySelector(domStrings.percentage).textContent = obj.percentage;
+
+      if (obj.percentage > 0) {
+        document.querySelector(domStrings.percentage).textContent = obj.percentage + '%';
+      } else {
+        document.querySelector(domStrings.percentage).textContent = '---'
+      }
     },
 
     getDOMstrings: function() {
