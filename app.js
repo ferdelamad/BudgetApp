@@ -112,7 +112,8 @@ var uiController = (function(){
     budget: ".budget__value",
     income: ".budget__income--value",
     expenses: ".budget__expenses--value",
-    percentage: ".budget__expenses--percentage"
+    percentage: ".budget__expenses--percentage",
+    container: ".container"
   }
 
   return {
@@ -188,6 +189,9 @@ var controller = (function(budgetCtrl, uiCtrl){
          ctrlAddItem();
        }
      });
+
+     document.querySelector(DOM.container).addEventListener('click', ctrlDelItem);
+
    }
 
    var calculateBudget = function() {
@@ -218,8 +222,12 @@ var controller = (function(budgetCtrl, uiCtrl){
      //Test -> console.log(input);
 
     }
-
    };
+
+   var ctrlDelItem = function(event) {
+     console.log(event.target.parentNode.parentNode.parentNode.parentNode);
+   }
+
 
 
    //return a PUBLIC initialization function to run the program
