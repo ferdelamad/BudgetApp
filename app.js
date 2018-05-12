@@ -176,6 +176,11 @@ var uiController = (function(){
       }
     },
 
+    delItem: function(el) {
+      el.remove();
+    },
+    //clearItem: function
+
     getDOMstrings: function() {
       return domStrings;
     }
@@ -242,10 +247,11 @@ var controller = (function(budgetCtrl, uiCtrl){
        id = arr[1];
      }
 
+     var final = event.target.parentNode.parentNode.parentNode.parentNode;
      //1. Delete item from the data structure
      budgetCtrl.deleteItem(type, id);
      //2. Delete item from the UI
-
+     uiCtrl.delItem(final);
      //3. Update and show the Budget
      calculateBudget();
    };
