@@ -91,6 +91,15 @@ var budgetController = (function () {
       }
     },
 
+    deleteItem: function(type, iden) {
+      var arr = data.allItems[type]
+      arr.forEach((obj, i) => {
+        if (obj.id == iden) {
+          arr.splice(i, 1);
+        }
+      });
+    },
+
     testing: function() {
       console.log(data);
     }
@@ -192,7 +201,7 @@ var controller = (function(budgetCtrl, uiCtrl){
 
      document.querySelector(DOM.container).addEventListener('click', ctrlDelItem);
 
-   }
+   };
 
    var calculateBudget = function() {
      //1.- Calculate the budget
@@ -225,11 +234,21 @@ var controller = (function(budgetCtrl, uiCtrl){
    };
 
    var ctrlDelItem = function(event) {
-     var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
-     if(id) {
-       var arr = id.split('-');
+     var item = event.target.parentNode.parentNode.parentNode.parentNode.id;
+     var arr, type, id;
+     if(item) {
+       arr = item.split('-');
+       type = arr[0];
+       id = arr[1];
      }
-   }
+
+     //1. Delete item from the data structure
+     budgetCtrl.deleteItem(type, id);
+     //2. Delete item from the UI
+
+     //3. Update and show the Budget
+     calculateBudget();
+   };
 
 
 
