@@ -239,19 +239,18 @@ var controller = (function(budgetCtrl, uiCtrl){
    };
 
    var ctrlDelItem = function(event) {
-     var item = event.target.parentNode.parentNode.parentNode.parentNode.id;
+     var item = event.target.parentNode.parentNode.parentNode.parentNode;
      var arr, type, id;
      if(item) {
-       arr = item.split('-');
+       arr = item.id.split('-');
        type = arr[0];
        id = arr[1];
      }
 
-     var final = event.target.parentNode.parentNode.parentNode.parentNode;
      //1. Delete item from the data structure
      budgetCtrl.deleteItem(type, id);
      //2. Delete item from the UI
-     uiCtrl.delItem(final);
+     uiCtrl.delItem(item);
      //3. Update and show the Budget
      calculateBudget();
    };
