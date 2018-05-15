@@ -218,6 +218,14 @@ var controller = (function(budgetCtrl, uiCtrl){
      console.log(budget);
    }
 
+   var updatePercentages = function() {
+     //1.- Calclate percentages
+
+     //2.- Read the percentages from the budgetController
+
+     //3.- Update the percentages in the UI
+   }
+
    var ctrlAddItem = function() {
      var input, newItem;
      // 1. Get the field input data
@@ -226,14 +234,18 @@ var controller = (function(budgetCtrl, uiCtrl){
      if (input.description !== '' && !isNaN(input.value) && input.value > 0) {
      // 2. Add the item to the budget controller
      newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+
      // 3. Add the item to the UI
      uiCtrl.addListItem(newItem, input.type);
 
      // 4. Clear the fields
      uiCtrl.clearFields();
+
      // 5. Calculate and display budget
      calculateBudget();
-     //Test -> console.log(input);
+
+     // 6. Calculate and update percentages
+     updatePercentages();
 
     }
    };
@@ -253,8 +265,9 @@ var controller = (function(budgetCtrl, uiCtrl){
      uiCtrl.delItem(item);
      //3. Update and show the Budget
      calculateBudget();
+     //4. Calculate and update percentages
+     updatePercentages();
    };
-
 
 
    //return a PUBLIC initialization function to run the program
