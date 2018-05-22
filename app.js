@@ -13,6 +13,17 @@ var budgetController = (function () {
     this.id = id;
     this.description = description;
     this.value = value;
+    this.percentage = -1 //We use -1 when something it's not defined
+  }
+
+  Expense.prototype.calcPercentages = function(totalIncome) {
+    if(totalIncome > 0) {
+      this.percentage = Math.round((this.value / totalIncome) * 100);
+    }
+  }
+
+  Expense.prototype.getPercentages = function() {
+    return this.percentage;
   }
 
   //Calculate total income or total expenses
@@ -79,6 +90,29 @@ var budgetController = (function () {
       }
       // In order to get the percentage of how much we have spent
       // Example: Income = 200, Expenses = 100, spent 50% -> 100/200 = 0.5 * 100
+
+    },
+
+    calculatePercentages: function() {
+      //income = 100
+      //expenses:
+       //a = 10
+         //a% = 10/100 = 10%
+       //b = 20
+         //b% = 20/100 = 20%
+       //c = 40
+         //c% = 40/100 = 40%
+      data.allItems.exp.forEach(exp => {
+        exp.calcPercentages(data.totals.inc);
+      });
+
+    },
+
+    getPercentages: function() {
+
+      return data.allItems.exp.map(exp => {
+        return exp.getPercentages();
+      });
 
     },
 
@@ -176,6 +210,10 @@ var uiController = (function(){
       }
     },
 
+    displayPercentages: function(percentages) {
+      
+    }
+
     delItem: function(el) {
       el.remove();
     },
@@ -220,10 +258,11 @@ var controller = (function(budgetCtrl, uiCtrl){
 
    var updatePercentages = function() {
      //1.- Calclate percentages
-
+     budgetCtrl.calculatePercentages();
      //2.- Read the percentages from the budgetController
-
+     var percentages = budgetCtrl.getPercentages();
      //3.- Update the percentages in the UI
+     console.log(percentages);
    }
 
    var ctrlAddItem = function() {
