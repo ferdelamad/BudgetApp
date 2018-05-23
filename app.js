@@ -160,6 +160,31 @@ var uiController = (function(){
     itemPercentage: ".item__percentage"
   }
 
+  var formatNumber = function(num, type) {
+    // + or - before de number
+    // , if the number is 1,000 or more
+    // just two decimals
+      // 134.47693 --> 134.48
+      // 287 --> 287.00
+
+    //num = Math.abs(num) //Get the absolut number always positive
+    //I don't think this is necesarry
+
+    num = (num).toFixed(2); //This way we always have 2 decimals
+
+    var arr = num.split('.');
+    var integers = arr[0];
+    var decimals = arr[1];
+    if (integers.length > 3) {
+       let three = integers.substring(integers.length-3);
+       let miles = integers.substring(0, integers.length-3);
+       num = miles + ',' + three + '.' + decimals;
+    }
+
+    return type === 'exp' ? '- ' + num : '+ ' + num;
+
+  };
+
   return {
     getInput: function() {
       return {
@@ -183,7 +208,7 @@ var uiController = (function(){
       //Replace the placeholder text with actual data
       newHtml = html.replace('%id%', obj.id);
       newHtml = newHtml.replace('%description%', obj.description);
-      newHtml = newHtml.replace('%value%', obj.value);
+      newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));
 
       //Insert the HTML into the DOM
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
@@ -200,9 +225,11 @@ var uiController = (function(){
     },
 
     displayBudget: function(obj) {
-      document.querySelector(domStrings.budget).textContent = obj.budget;
-      document.querySelector(domStrings.income).textContent = obj.totalInc;
-      document.querySelector(domStrings.expenses).textContent = obj.totalExp;
+      var type;
+      obj.budget > 0 ? type = "inc" : type = "exp";
+      document.querySelector(domStrings.budget).textContent = formatNumber(obj.budget, type);
+      document.querySelector(domStrings.income).textContent = formatNumber(obj.totalInc, "inc");
+      document.querySelector(domStrings.expenses).textContent = formatNumber(obj.totalExp, "exp");
 
       if (obj.percentage > 0) {
         document.querySelector(domStrings.percentage).textContent = obj.percentage + '%';
@@ -212,19 +239,43 @@ var uiController = (function(){
     },
 
     displayPercentages: function(percentages) {
-      if(percentages.length > 0) {
-        var expenses = document.querySelectorAll(domStrings.itemPercentage);
-        var expArr = Array.prototype.slice.apply(expenses);
-        expArr.forEach((exp, i) => {
+
+      var expenses = document.querySelectorAll(domStrings.itemPercentage);
+      var expArr = Array.prototype.slice.apply(expenses);
+      expArr.forEach((exp, i) => {
+        if(percentages[i] > 0) {
           exp.textContent = percentages[i] + '%';
-        });
-      }
+        } else {
+          exp.textContent = '---';
+        }
+      });
+
+      //Anothet way is to create your own forEach function
+      //Very good for practice!
+        /*
+        var forEach = function(nodeList, callback) {
+          for (let i = 0; i < nodeList.length; i++) {
+            callback(nodeList[i], i);
+          }
+        }
+
+        var callback = function(currentNode, index) {
+          if(percentages[index] > 0) {
+            currentNode.textContent = percentages[index] + '%';
+          } else {
+            currentNode.textContent = '---';
+          }
+
+        }
+
+        forEach(expenses, callback);
+        */
     },
 
+    //clearItem: function
     delItem: function(el) {
       el.remove();
     },
-    //clearItem: function
 
     getDOMstrings: function() {
       return domStrings;
@@ -279,22 +330,22 @@ var controller = (function(budgetCtrl, uiCtrl){
      input = uiCtrl.getInput();
 
      if (input.description !== '' && !isNaN(input.value) && input.value > 0) {
-     // 2. Add the item to the budget controller
-     newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+       // 2. Add the item to the budget controller
+       newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
-     // 3. Add the item to the UI
-     uiCtrl.addListItem(newItem, input.type);
+       // 3. Add the item to the UI
+       uiCtrl.addListItem(newItem, input.type);
 
-     // 4. Clear the fields
-     uiCtrl.clearFields();
+       // 4. Clear the fields
+       uiCtrl.clearFields();
 
-     // 5. Calculate and display budget
-     calculateBudget();
+       // 5. Calculate and display budget
+       calculateBudget();
 
-     // 6. Calculate and update percentages
-     updatePercentages();
+       // 6. Calculate and update percentages
+       updatePercentages();
 
-    }
+     }
    };
 
    var ctrlDelItem = function(event) {
