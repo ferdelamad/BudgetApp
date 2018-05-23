@@ -285,6 +285,21 @@ var uiController = (function(){
       document.querySelector(domStrings.date).textContent = months[month] + ' ' + year;
     },
 
+    changeType: function() {
+      //inputBtn: '.add__btn',
+      var inputs = document.querySelectorAll(
+        domStrings.inputType + ',' + domStrings.inputDescription + ',' + domStrings.inputValue);
+
+      var inputsArr = Array.prototype.slice.apply(inputs);
+
+      inputsArr.forEach(input => {
+        input.classList.toggle('red-focus'); //toggle por que le quitas la que esta y pones la RED
+      });
+
+      document.querySelector(domStrings.inputBtn).classList.toggle('red');
+
+    },
+
     //clearItem: function
     delItem: function(el) {
       el.remove();
@@ -314,6 +329,8 @@ var controller = (function(budgetCtrl, uiCtrl){
      });
 
      document.querySelector(DOM.container).addEventListener('click', ctrlDelItem);
+
+     document.querySelector(DOM.inputType).addEventListener('change', uiCtrl.changeType);
 
    };
 
